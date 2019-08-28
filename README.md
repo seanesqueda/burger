@@ -1,2 +1,0 @@
-# burger
-Homework 12
