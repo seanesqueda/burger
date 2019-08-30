@@ -3,25 +3,29 @@
     <div class="row">
         <div class="col-6">
             <h2 class="t1">EAT THESE BURGERS</h2>
-            {{#each burgers}}
-            {{#unless devoured}}
-            <p>
-                {{id}} {{burger_name}}
-                <button data-id="{{id}}" id="devour">Devour It!</button>
-            </p>
-            {{/unless}}
-            {{/each}}
+            <ul>
+                {{#each burgers}}
+                {{#unless devoured}}
+                <p>
+                    {{id}} - {{burger_name}}
+                    <button data-id="{{this.id}}" id="devour">Devour It!</button>
+                </p>
+                {{/unless}}
+                {{/each}}
+            </ul>
         </div>
         <div class="col-6">
             <h2 class="t1">YUMMM DELICIOUS</h2>
-            {{#each burgers}}
-            {{#if devoured}}
-            <p>
-                {{id}} {{burger_name}}
-                <button data-id="{{id}}" id="delete">Throw Away!</button>
-            </p>
-            {{/if}}
-            {{/each}}
+            <ul>
+                {{#each burgers}}
+                {{#if devoured}}
+                <p>
+                    {{id}} - {{burger_name}}
+                    <button data-id="{{this.id}}" id="delete">Throw Away!</button>
+                </p>
+                {{/if}}
+                {{/each}}
+            </ul>
         </div>
     </div>
     <form action="">
@@ -31,61 +35,3 @@
         </div>
     </form>
 </div>
-
-<script>
-    $("#submitBurger").on("click", function (event) {
-        event.preventDefault();
-
-        var newBurger = {
-            burger_name: $("#burgerForm").val().trim(),
-            devoured: 0
-        };
-        console.log(newBurger)
-        $.ajax("/api/burgers", {
-            type: "POST",
-            data: newBurger
-        }).then(
-            function () {
-                console.log("created new burger");
-                // Reload the page to get the updated list
-                location.reload();
-            }
-        );
-    });
-
-    $("#devour").on("click", function (event) {
-
-        var id = $(this).data("id");
-        
-        var devoured = {
-            devoured: 1
-        }
-
-        $.ajax("/api/burgers/" + id, {
-            type: "PUT",
-            data: devoured
-        }).then(
-            function () {
-                console.log("Eaten the burger")
-                // Reload the page to get the updated list
-                location.reload();
-            }
-        );
-    });
-
-    $("#delete").on("click", function (event) {
-
-        var id = $(this).data("id");
-
-        // Send the DELETE request.
-        $.ajax("/api/burgers/" + id, {
-            type: "DELETE"
-        }).then(
-            function () {
-                console.log("Deleted burger", id);
-                // Reload the page to get the updated list
-                location.reload();
-            }
-        );
-    });
-</script>
