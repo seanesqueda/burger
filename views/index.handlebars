@@ -7,22 +7,22 @@
         <div class="col-6">
             <h2 class="t1">EAT THESE BURGERS</h2>
             {{#each burgers}}
-            {{#if devoured}}
+            {{#unless devoured}}
             <p>
                 {{id}} {{burger_name}}
-                <button data-burgerID="{{id}}" class="devour">Devour It!</button>
+                <button data-id="{{id}}" id="devour">Devour It!</button>
             </p>
-            {{/if}}
+            {{/unless}}
             {{/each}}
         </div>
         <div class="col-6">
             <h2 class="t1">YUMMM DELICIOUS</h2>
             {{#each burgers}}
-            {{#unless devoured}}
+            {{#if devoured}}
             <p>
                 {{id}} {{burger_name}}
             </p>
-            {{/unless}}
+            {{/if}}
             {{/each}}
         </div>
     </div>
@@ -33,3 +33,46 @@
         </div>
     </form>
 </div>
+
+<script>
+    $("#submitBurger").on("click", function (event) {
+        event.preventDefault();
+
+        var newBurger = {
+            burger_name: $("#burgerForm").val().trim(),
+            devoured: 0
+        };
+        console.log(newBurger)
+        $.ajax("/api/burgers", {
+            type: "POST",
+            data: newBurger
+        }).then(
+            function () {
+                console.log("created new burger");
+                // Reload the page to get the updated list
+                location.reload();
+            }
+        );
+    });
+
+    $("#devour").on("click", function (event) {
+        event.preventDefault();
+
+        var id = $(this).data("id");
+
+        var devoured = {
+            devoured: 1
+        }
+
+        $.ajax("/api/burgers/" + id, {
+            type: "PUT",
+            data: devoured
+        }).then(
+            function () {
+                console.log("Eaten the burger")
+                // Reload the page to get the updated list
+                location.reload();
+            }
+        );
+    });
+</script>
