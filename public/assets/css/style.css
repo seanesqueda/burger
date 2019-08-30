@@ -29,3 +29,7 @@
 #burgerForm {
     margin:auto;
 }
+
+#eatenBurger {
+    font-weight: lighter;
+}
