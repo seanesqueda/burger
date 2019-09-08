@@ -6,22 +6,16 @@ if (process.env.JAWSDB_URL) {
   var connection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
   var connection = mysql.createConnection({
-      host: "localhost",
+      host: "op2hpcwcbxb1t4z9.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
       port: 3306,
-      user: "root",
-      password: "root",
-      database: "burgers_db"
+      user: "tv5qwsj3urpfj67l",
+      password: "	pj7q8agijq38ewew",
+      database: "wy2azn99ptgxwhi9"
   });
 }
 
 // Make connection.
-connection.connect(function(err) {
-  if (err) {
-    console.error("error connecting: " + err.stack);
-    return;
-  }
-  console.log("connected as id " + connection.threadId);
-});
+connection.connect();
 
 // Export connection for our ORM to use.
 module.exports = connection;
